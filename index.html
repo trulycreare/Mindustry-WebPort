@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mindustry Web</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html, body {
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            background-color: #000;
+            color: #fff;
+            font-family: sans-serif;
+        }
+        #container {
+            width: 100vw;
+            height: 100vh;
+        }
+        #loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            pointer-events: none;
+        }
+    </style>
+
+    <!-- CheerpJ 3.0 WebAssembly JVM Loader -->
+    <script src="https://cjrtnc.leaningtech.com/3.0/loader.js"></script>
+</head>
+<body>
+    <div id="loading">
+        <h2>Loading Mindustry JVM...</h2>
+        <p>Please wait, fetching game environment.</p>
+    </div>
+    
+    <div id="container"></div>
+
+    <script type="module">
+        async function launchMindustry() {
+            try {
+                // Initialize the WASM JVM Environment
+                await cheerpjInit();
+
+                // Bind display canvas to the container
+                cheerpjCreateDisplay(-1, -1, document.getElementById("container"));
+
+                // Hide loading overlay once initialization finishes
+                document.getElementById("loading").style.display = "none";
+
+                // Execute the Mindustry Fat JAR
+                await cheerpjRunJar("/app/Mindustry.jar");
+            } catch (err) {
+                console.error("Mindustry Launch Error:", err);
+                document.getElementById("loading").innerHTML = 
+                    `<h2 style="color:red;">Launch Failed</h2><p>${err.message}</p>`;
+            }
+        }
+
+        launchMindustry();
+    </script>
+</body>
+</html>
