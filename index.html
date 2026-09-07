@@ -29,6 +29,7 @@
             transform: translate(-50%, -50%);
             text-align: center;
             pointer-events: none;
+            z-index: 10;
         }
     </style>
 </head>
@@ -40,37 +41,37 @@
     
     <div id="container"></div>
 
-    <!-- 1. Load CheerpJ 3.0 Loader Directly -->
-    <script src="https://cjrtnc.leaningtech.com/3.0/loader.js"></script>
+    <!-- 1. CheerpJ 3.0 WebAssembly Loader with CORS support -->
+    <script src="https://cjrtnc.leaningtech.com/3.0/loader.js" crossorigin="anonymous"></script>
 
-    <!-- 2. Execute Runner Script After Loader Finishes -->
+    <!-- 2. Main Execution Script -->
     <script>
         async function launchMindustry() {
             try {
-                // Verify loader loaded
+                // Verify loader availability
                 if (typeof cheerpjInit === "undefined") {
-                    throw new Error("CheerpJ loader.js failed to load from CDN.");
+                    throw new Error("CheerpJ loader.js was blocked or failed to download from CDN. Disable adblockers or privacy shields for this site.");
                 }
 
-                // Initialize WASM JVM
+                // Initialize WASM JVM Environment
                 await cheerpjInit();
 
-                // Create Display Canvas
+                // Create full-window Display Canvas
                 cheerpjCreateDisplay(-1, -1, document.getElementById("container"));
 
-                // Hide Loading Text
+                // Hide Loading Text Overlay
                 document.getElementById("loading").style.display = "none";
 
-                // Run Game Jar
+                // Execute the Mindustry Fat JAR
                 await cheerpjRunJar("/app/Mindustry.jar");
             } catch (err) {
                 console.error("Mindustry Launch Error:", err);
                 document.getElementById("loading").innerHTML = 
-                    `<h2 style="color:red;">Launch Failed</h2><p>${err.message}</p>`;
+                    `<h2 style="color:#ff4444;">Launch Failed</h2><p style="margin-top:10px;">${err.message}</p>`;
             }
         }
 
-        // Wait for page load to ensure CheerpJ is globally available
+        // Wait for page load to guarantee CheerpJ CDN script is processed
         window.addEventListener("load", launchMindustry);
     </script>
 </body>
