@@ -41,19 +41,17 @@
     
     <div id="container"></div>
 
-    <!-- 1. CheerpJ 3.0 WebAssembly Loader with CORS support -->
-    <script src="https://cjrtnc.leaningtech.com/3.0/loader.js" crossorigin="anonymous"></script>
+    <!-- CheerpJ 4.3 WebAssembly Loader -->
+    <script src="https://cjrtnc.leaningtech.com/4.3/loader.js" crossorigin="anonymous"></script>
 
-    <!-- 2. Main Execution Script -->
     <script>
         async function launchMindustry() {
             try {
-                // Verify loader availability
                 if (typeof cheerpjInit === "undefined") {
-                    throw new Error("CheerpJ loader.js was blocked or failed to download from CDN. Disable adblockers or privacy shields for this site.");
+                    throw new Error("CheerpJ loader.js was blocked or failed to download from the 4.3 CDN endpoint.");
                 }
 
-                // Initialize WASM JVM Environment
+                // Initialize WebAssembly JVM Environment
                 await cheerpjInit();
 
                 // Create full-window Display Canvas
@@ -71,7 +69,7 @@
             }
         }
 
-        // Wait for page load to guarantee CheerpJ CDN script is processed
+        // Wait for page load to ensure CheerpJ CDN script is processed
         window.addEventListener("load", launchMindustry);
     </script>
 </body>
