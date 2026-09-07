@@ -31,9 +31,6 @@
             pointer-events: none;
         }
     </style>
-
-    <!-- CheerpJ 3.0 WebAssembly JVM Loader -->
-    <script src="https://cjrtnc.leaningtech.com/3.0/loader.js"></script>
 </head>
 <body>
     <div id="loading">
@@ -43,19 +40,28 @@
     
     <div id="container"></div>
 
-    <script type="module">
+    <!-- 1. Load CheerpJ 3.0 Loader Directly -->
+    <script src="https://cjrtnc.leaningtech.com/3.0/loader.js"></script>
+
+    <!-- 2. Execute Runner Script After Loader Finishes -->
+    <script>
         async function launchMindustry() {
             try {
-                // Fixed function casing: cheerpjInit (lowercase 'j')
+                // Verify loader loaded
+                if (typeof cheerpjInit === "undefined") {
+                    throw new Error("CheerpJ loader.js failed to load from CDN.");
+                }
+
+                // Initialize WASM JVM
                 await cheerpjInit();
 
-                // Bind display canvas to the container
+                // Create Display Canvas
                 cheerpjCreateDisplay(-1, -1, document.getElementById("container"));
 
-                // Hide loading overlay once initialization finishes
+                // Hide Loading Text
                 document.getElementById("loading").style.display = "none";
 
-                // Execute the Mindustry Fat JAR
+                // Run Game Jar
                 await cheerpjRunJar("/app/Mindustry.jar");
             } catch (err) {
                 console.error("Mindustry Launch Error:", err);
@@ -64,7 +70,8 @@
             }
         }
 
-        launchMindustry();
+        // Wait for page load to ensure CheerpJ is globally available
+        window.addEventListener("load", launchMindustry);
     </script>
 </body>
 </html>
