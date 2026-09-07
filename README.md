@@ -1,0 +1,1 @@
+a bad (and not working) attempt to port mindustry to web (like eaglercraft) i also dont know anything about coding so i cant even do anything. dm me on discord if you wanna try to help (i probably wont respond but if i do dont expect me to know anything about coding), my username is oblmc
