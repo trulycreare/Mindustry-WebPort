@@ -48,7 +48,7 @@
         async function launchMindustry() {
             try {
                 if (typeof cheerpjInit === "undefined") {
-                    throw new Error("CheerpJ loader.js was blocked or failed to download from the 4.3 CDN endpoint.");
+                    throw new Error("CheerpJ loader.js failed to download.");
                 }
 
                 // Initialize WebAssembly JVM Environment
@@ -60,8 +60,12 @@
                 // Hide Loading Text Overlay
                 document.getElementById("loading").style.display = "none";
 
-                // Execute the Mindustry Fat JAR
-                await cheerpjRunJar("/app/Mindustry.jar");
+                // Build absolute web URL to Mindustry.jar sitting beside index.html
+                const jarPath = new URL("Mindustry.jar", window.location.href).href;
+                console.log("Loading JAR from direct web URL:", jarPath);
+
+                // Run JAR using direct URL
+                await cheerpjRunJar(jarPath);
             } catch (err) {
                 console.error("Mindustry Launch Error:", err);
                 document.getElementById("loading").innerHTML = 
@@ -69,7 +73,6 @@
             }
         }
 
-        // Wait for page load to ensure CheerpJ CDN script is processed
         window.addEventListener("load", launchMindustry);
     </script>
 </body>
